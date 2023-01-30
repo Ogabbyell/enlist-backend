@@ -5,8 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport');
-
-require('dotenv').config()
+var config = require('./config');
 
 //import routes 
 var indexRouter = require('./routes/index');
@@ -21,11 +20,9 @@ var helmet = require('helmet');
 
 const mongoose = require('mongoose');
 
-const dev_db_url = "mongodb+srv://gabby:Tw7qAEFYeiAhuY3O@bhcpfproject.mtytioj.mongodb.net/bhcpfproject";
+const url = config.mongoUrl; 
 
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
-
-const connect = mongoose.connect(mongoDB);
+const connect = mongoose.connect(url);
 
 connect.then((db) => {
   console.log('Connected successfully to DBserver');
@@ -45,7 +42,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(session({
-  secret: process.env.SECRET_KEY || '12345-67890-09876-54321',
+  secret: '12345-67890-09876-54321',
   saveUninitialized: false,
   resave: false,
   cookie: { secure: true }
